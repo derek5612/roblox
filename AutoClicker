@@ -3,6 +3,7 @@ local PlayerGui = Player.PlayerGui
 
 local Remote = game.ReplicatedStorage.IncreaseSpeed
 local Gui = Instance.new("ScreenGui")
+Gui.ResetOnSpawn = false
 
 local StartButton = Instance.new("TextButton")
 
