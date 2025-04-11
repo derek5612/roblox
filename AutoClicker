@@ -34,9 +34,8 @@ local ButtonConnection = nil
 ButtonConnection = StartButton.MouseButton1Click:Connect(function()
 	if not Loop then
 		Loop = task.spawn(function()
-			while task.wait(0.1) do
+			while task.wait(0.01) do
 				Remote:FireServer()
-				print("Fired")
 			end
 		end)
 		
