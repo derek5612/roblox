@@ -1,0 +1,54 @@
+local Player = game.Players.LocalPlayer
+local PlayerGui = Player.PlayerGui
+
+local Remote = game.ReplicatedStorage.IncreaseSpeed
+local Gui = Instance.new("ScreenGui")
+
+local StartButton = Instance.new("TextButton")
+
+StartButton.TextScaled = true
+StartButton.Text = "Start"
+
+StartButton.Position = UDim2.fromScale(0.37, 0.598)
+StartButton.Size = UDim2.fromScale(0.26, 0.185)
+
+StartButton.Parent = Gui
+
+local TerminateButton = Instance.new("TextButton")
+TerminateButton.TextScaled = true
+TerminateButton.Text = "Terminate"
+
+TerminateButton.Position = UDim2.fromScale(0.313, 0.783)
+TerminateButton.Size = UDim2.fromScale(0.375, 0.185)
+
+TerminateButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+
+TerminateButton.Parent = Gui
+
+Gui.Parent = PlayerGui
+
+local Loop = nil
+
+local ButtonConnection = nil
+
+ButtonConnection = StartButton.MouseButton1Click:Connect(function()
+	if not Loop then
+		Loop = task.spawn(function()
+			while task.wait(0.1) do
+				Remote:FireServer()
+				print("Fired")
+			end
+		end)
+		
+		StartButton.Text = "Stop"
+	else
+		if Loop then task.cancel(Loop) Loop = nil end
+		StartButton.Text = "Start"
+	end
+end)
+
+TerminateButton.MouseButton1Click:Once(function()
+	if Loop then task.cancel(Loop) Loop = nil end
+	if ButtonConnection and ButtonConnection.Connected then ButtonConnection:Disconnect() ButtonConnection = nil end
+	Gui:Destroy()
+end)
